@@ -3,221 +3,254 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bambou Script Copier</title>
+  <title>Bambou Experience</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --bg: linear-gradient(135deg, #064e3b, #022c22);
-      --card: rgba(16, 185, 129, 0.15);
-      --card-hover: rgba(16, 185, 129, 0.25);
-      --accent: #34d399;
-      --accent-dark: #059669;
-      --text: #ecfdf5;
-      --muted: #a7f3d0;
-      --radius: 18px;
+    :root{
+      --bg1:#021b14;
+      --bg2:#064e3b;
+      --card:rgba(16,185,129,0.12);
+      --card2:rgba(16,185,129,0.18);
+      --accent:#34d399;
+      --text:#ecfdf5;
+      --muted:#a7f3d0;
+      --radius:18px;
     }
 
-    * { box-sizing: border-box; }
+    *{box-sizing:border-box}
 
-    body {
-      margin: 0;
-      font-family: 'Poppins', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 30px 15px;
+    body{
+      margin:0;
+      font-family:Poppins,sans-serif;
+      color:var(--text);
+      background: radial-gradient(circle at top, var(--bg2), var(--bg1));
+      overflow-x:hidden;
     }
 
-    h1 {
-      font-size: 36px;
-      font-weight: 800;
-      margin-bottom: 5px;
+    /* bamboo fog ambience */
+    .fog{
+      position:fixed;
+      inset:0;
+      background: radial-gradient(circle at 20% 30%, rgba(52,211,153,0.10), transparent 40%),
+                  radial-gradient(circle at 80% 70%, rgba(16,185,129,0.08), transparent 45%);
+      animation: drift 12s infinite alternate ease-in-out;
+      z-index:0;
+      pointer-events:none;
     }
 
-    .logo {
-      font-size: 18px;
-      color: var(--muted);
-      margin-bottom: 20px;
+    @keyframes drift{
+      from{transform:translateY(0px)}
+      to{transform:translateY(-20px)}
     }
 
-    .container {
-      width: 100%;
-      max-width: 850px;
+    /* rain effect */
+    .rain{
+      position:fixed;
+      inset:0;
+      background-image: repeating-linear-gradient(
+        to bottom,
+        rgba(255,255,255,0.08) 0px,
+        rgba(255,255,255,0.08) 1px,
+        transparent 2px,
+        transparent 6px
+      );
+      background-size:100% 6px;
+      animation: rainMove 0.4s linear infinite;
+      opacity:0.25;
+      z-index:1;
+      pointer-events:none;
     }
 
-    .line {
-      background: var(--card);
-      padding: 18px;
-      margin: 10px 0;
-      border-radius: var(--radius);
-      cursor: pointer;
-      backdrop-filter: blur(12px);
-      transition: all 0.25s ease;
-      border: 1px solid rgba(52, 211, 153, 0.3);
-      position: relative;
+    @keyframes rainMove{
+      from{background-position:0 0}
+      to{background-position:0 20px}
     }
 
-    .line:hover {
-      background: var(--card-hover);
-      transform: translateY(-3px) scale(1.01);
-      border-color: var(--accent);
-      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    header{
+      text-align:center;
+      padding:30px 10px 10px;
+      position:relative;
+      z-index:2;
     }
 
-    .line::after {
-      content: "Tap to copy";
-      position: absolute;
-      right: 15px;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 12px;
-      color: var(--muted);
-      opacity: 0;
-      transition: 0.2s;
+    h1{
+      margin:0;
+      font-size:40px;
+      font-weight:800;
     }
 
-    .line:hover::after {
-      opacity: 1;
+    .sub{
+      color:var(--muted);
+      margin-top:5px;
     }
 
-    .copied {
-      background: rgba(52, 211, 153, 0.3) !important;
-      border-color: var(--accent-dark);
+    .container{
+      max-width:900px;
+      margin:auto;
+      padding:20px;
+      position:relative;
+      z-index:2;
     }
 
-    .toast {
-      position: fixed;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%) translateY(20px);
-      background: #022c22;
-      color: var(--text);
-      padding: 12px 22px;
-      border-radius: 999px;
-      opacity: 0;
-      transition: 0.3s;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+    .section{
+      margin-top:25px;
     }
 
-    .toast.show {
-      opacity: 1;
-      transform: translateX(-50%) translateY(0);
+    .section-title{
+      font-size:18px;
+      color:var(--accent);
+      margin-bottom:10px;
+      font-weight:600;
     }
 
-    .top-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 15px;
+    .line{
+      background:var(--card);
+      padding:16px;
+      margin:10px 0;
+      border-radius:var(--radius);
+      cursor:pointer;
+      transition:0.25s;
+      border:1px solid rgba(52,211,153,0.2);
+      position:relative;
     }
 
-    button {
-      background: var(--accent);
-      border: none;
-      padding: 10px 18px;
-      border-radius: 999px;
-      font-weight: 600;
-      cursor: pointer;
-      color: #022c22;
-      transition: 0.2s;
+    .line:hover{
+      background:var(--card2);
+      transform:translateY(-3px);
     }
 
-    button:hover {
-      background: var(--accent-dark);
-      color: white;
-      transform: scale(1.05);
+    .copied{
+      background:rgba(52,211,153,0.25)!important;
     }
 
-    .footer {
-      margin-top: 25px;
-      font-size: 13px;
-      color: var(--muted);
-      opacity: 0.8;
+    button{
+      background:var(--accent);
+      border:none;
+      padding:10px 16px;
+      border-radius:999px;
+      cursor:pointer;
+      font-weight:600;
+      color:#022c22;
     }
 
+    .topbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:10px;
+    }
+
+    .toast{
+      position:fixed;
+      bottom:20px;
+      left:50%;
+      transform:translateX(-50%);
+      background:#022c22;
+      padding:12px 20px;
+      border-radius:999px;
+      opacity:0;
+      transition:0.3s;
+      z-index:10;
+    }
+
+    .toast.show{opacity:1}
+
+    footer{
+      text-align:center;
+      color:var(--muted);
+      padding:30px;
+      font-size:13px;
+      position:relative;
+      z-index:2;
+    }
   </style>
 </head>
 <body>
 
-<h1>🌿 Bambou</h1>
-<div class="logo">Host Script Assistant</div>
+<div class="fog"></div>
+<div class="rain"></div>
+
+<header>
+  <h1>🌿 Bambou</h1>
+  <div class="sub">Rainforest Dining Experience</div>
+</header>
 
 <div class="container">
-  <div class="top-bar">
-    <span></span>
+
+  <div class="topbar">
+    <div></div>
     <button onclick="copyAll()">Copy Full Script</button>
   </div>
 
-  <div class="line">Hello! Welcome to Bambou! My name is Fimjay, and I will be taking care of you today. How many people are in your party on this wonderful day?</div>
-  <div class="line">Would you like to sit at a booth, counter, grill, or a table?</div>
-  <div class="line">Great choice, please follow me to your table.</div>
-  <div class="line">We will be starting off with drinks. Let me know what you would like, or you can choose to skip.</div>
-  <div class="line">Amazing choice! Please wait here while I get your order ready.</div>
-  <div class="line">I am back with your drinks. I hope you enjoy them.</div>
-  <div class="line">Now we are moving on to appetizers. Let me know what you would like, or you can skip.</div>
-  <div class="line">Great choice! Please wait here while I prepare your order.</div>
-  <div class="line">I am back with your appetizers. Enjoy!</div>
-  <div class="line">Now it's time for your entree. What would you like? You can also skip if you'd prefer.</div>
-  <div class="line">Excellent choice! Please wait here while I get your order.</div>
-  <div class="line">I am back with your entree. Enjoy your meal.</div>
-  <div class="line">Now for something sweet—dessert. Let me know what you would like, or you can skip.</div>
-  <div class="line">Wonderful choice! Please wait here while I get it for you.</div>
-  <div class="line">I am back with your dessert. I hope you enjoy it.</div>
-  <div class="line">Thank you for dining with us today. I hope you had a great experience, and we look forward to seeing you again soon!</div>
+  <div class="section">
+    <div class="section-title">WELCOME</div>
+    <div class="line">Hello! Welcome to Bambou! My name is Fimjay, and I will be taking care of you today. How many people are in your party on this wonderful day?</div>
+    <div class="line">Would you like to sit at a booth, counter, grill, or a table?</div>
+    <div class="line">Great choice, please follow me to your table.</div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">DRINKS</div>
+    <div class="line">We will be starting off with drinks. Let me know what you would like, or you can choose to skip.</div>
+    <div class="line">I am back with your drinks. I hope you enjoy them.</div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">APPETIZERS</div>
+    <div class="line">Now we are moving on to appetizers. Let me know what you would like, or you can skip.</div>
+    <div class="line">I am back with your appetizers. Enjoy!</div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">ENTRÉE</div>
+    <div class="line">Now it's time for your entree. What would you like? You can also skip if you'd prefer.</div>
+    <div class="line">I am back with your entree. Enjoy your meal.</div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">DESSERT</div>
+    <div class="line">Now for something sweet—dessert. Let me know what you would like, or you can skip.</div>
+    <div class="line">I am back with your dessert. I hope you enjoy it.</div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">GOODBYE</div>
+    <div class="line">Thank you for dining with us today. I hope you had a great experience, and we look forward to seeing you again soon!</div>
+  </div>
+
 </div>
 
-<div class="toast" id="toast">Copied!</div>
+<div class="toast" id="toast">Copied</div>
 
-<div class="footer">Bambou • Smooth Hosting Experience</div>
+<footer>Bambou • Rainforest Ambience</footer>
 
 <script>
-  const lines = document.querySelectorAll('.line');
-  const toast = document.getElementById('toast');
+const lines=document.querySelectorAll('.line');
+const toast=document.getElementById('toast');
 
-  function showToast(msg = 'Copied!') {
-    toast.textContent = msg;
-    toast.classList.add('show');
-    setTimeout(() => toast.classList.remove('show'), 1200);
+function showToast(t){toast.textContent=t;toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),1200)}
+
+function copy(text){
+  const ta=document.createElement('textarea');
+  ta.value=text;
+  document.body.appendChild(ta);
+  ta.select();
+  document.execCommand('copy');
+  document.body.removeChild(ta);
+  showToast('Copied');
+}
+
+lines.forEach(l=>{
+  l.onclick=()=>{
+    copy(l.innerText);
+    l.classList.add('copied');
+    setTimeout(()=>l.classList.remove('copied'),400);
   }
+});
 
-  function fallbackCopy(text) {
-    const textarea = document.createElement('textarea');
-    textarea.value = text;
-    document.body.appendChild(textarea);
-    textarea.select();
-    try {
-      document.execCommand('copy');
-      showToast('Copied');
-    } catch (err) {
-      showToast('Copy failed');
-    }
-    document.body.removeChild(textarea);
-  }
-
-  function copyText(text) {
-    if (navigator.clipboard && window.isSecureContext) {
-      navigator.clipboard.writeText(text)
-        .then(() => showToast('Copied'))
-        .catch(() => fallbackCopy(text));
-    } else {
-      fallbackCopy(text);
-    }
-  }
-
-  lines.forEach(line => {
-    line.addEventListener('click', () => {
-      copyText(line.innerText);
-      line.classList.add('copied');
-      setTimeout(() => line.classList.remove('copied'), 400);
-    });
-  });
-
-  function copyAll() {
-    const text = Array.from(lines).map(l => l.innerText).join('\n\n');
-    copyText(text);
-  }
+function copyAll(){
+  copy(Array.from(lines).map(l=>l.innerText).join('\n\n'));
+}
 </script>
 
 </body>
